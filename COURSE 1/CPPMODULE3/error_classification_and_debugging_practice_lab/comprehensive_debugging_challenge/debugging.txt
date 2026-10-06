@@ -1,0 +1,34 @@
+Program:: program_1.cpp
+
+==============================
+
+Line 26: SYNTAX ERROR - Missing semicolon
+- Problem: double num1, num2
+- Solution: double num1, num2;
+
+Line 28: LOGICAL ERROR - Assignemtn instead of logical operator
+- Problem: while (continueCalc = 'y') {
+- Solution: while (continueCalc == 'y') {
+
+Line 53: RUNTIME ERROR - Lousy conversion of double to int
+- Problem: cout << "Result: " << power(num1, num2) << endl;
+- Solution: cout << "Result: " << power(num1, static_cast<int>(num2)) << endl;
+
+Line 79: LOGICAL ERROR - Reversed parameters
+- Problem: return b - a;
+- Solution: return a - b;
+
+Line 87: RUNTIME ERROR - Possible division by 0
+- Problem: double divide(double a, double b) {
+                return a / b; // Bug: no check for division by zero
+            }
+- Solution: double divide(double a, double b) {
+                if (b == 0) {
+                    std::cout << "Error: Division by 0!" << '\n';
+                    return 1;
+                }
+            return a / b; // Bug: no check for division by zero
+            }
+Line 92: LOGICAL ERROR - Wrong loop initialization
+- Problem: for (int i = 0; i <= exponent; i++) { 
+- Solution: for (int i = 1; i <= exponent; i++) { 

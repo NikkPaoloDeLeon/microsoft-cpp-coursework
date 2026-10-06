@@ -1,0 +1,262 @@
+DECLARE FUNCTION miniGameAtt()
+
+DECLARE FUNCTION attributeAllotment(INT attributeCount) RETURN VECTOR
+DECLARE FUNCTION validateIntegerInput(STRING propmt) RETURN INTEGER
+
+FUNCTION miniGameAtt()
+    BOOLEAN exitProcess = FALSE
+    DO
+        INT areas = 0
+        PRINT "=== WELCOMM TO MINIGAME MIND ATTACK ==="
+        PRINT "This is a game where you chose how many areas" 
+        PRINT "you will divide. The minimum number of areas is 3 and the maximum is 5."
+        PRINT "If you chose 3 you will divide 80 points in those 3 areas. After alloting"
+        PRINT "the points you will simulate agaisnt the computer who also alloted points" 
+        PRINT "in those 3 areas. Higher point wins! NOTE: YOU CANNOT EXCEED THE MAX POINTS!"
+        PRINT "LETS BEGIN!"
+        prompt = "How may Areas do you want to have (3 - 5)?:
+        areas = validateIntegerInput(prompt)
+        PRINT "You have chosen {areas} areas." 
+        attributeAllotment(areas)
+
+    WHILE exitProcess != TRUE
+
+
+END FUNCTION
+
+FUNCTION validateIntegerInput(STRING prompt) RETURN value
+    BOOLEAN validInput = FALSE
+    INTEGER value
+    DO 
+        PRINT prompt
+        READ value
+        IF READ FAILS OR READ PEAK IS NOT NEXTLINE
+            RESET INPUT
+            CLEAR INPUT BUFFER
+            PRINT "INVALID INPUT! INPUT ONLY AN INTEGER."
+            CONTINUE TO NEXT ITERATION
+        ENDIF   
+        validInput = TRUE
+    ENDWHILE (validInput)
+END FUNCTION
+        
+
+FUNCTION attributeAllotment(INT attributeCount) RETURN VECTOR
+    INT count = 1
+    INT power = 0
+    INT maxPowerCapacity = 0
+    INT availablePowerCapacity = 0
+
+    SWITCH attributeCount
+        case 3 
+            PRINT "You have chosen 3 areas." 
+            PRINT "Your maximum points to allot is 30."
+            maxPowerCapacity = 30
+            EXIT SWITCH
+        case 4 
+            PRINT "You have chosen 4 areas." 
+            PRINT "Your maximum points to allot is 60."
+            maxPowerCapacity = 60
+            EXIT SWITCH
+        case 5
+            PRINT "You have chosen 5 areas." 
+            PRINT "Your m aximum points to allot is 100."
+            maxPowerCapacity = 100
+            EXIT SWITCH
+        default case
+            PRINT "Invalid input!"
+            EXIT SWITCH 
+        END SWITCH
+
+    DECLARE attributeStorage : VECTOR OF INTEGER SIZE attributeCount
+    STRING prompt = "Enter power for area {count}"
+
+    FOR count <= LENGTH(attributeStorage) && power < availablePowerCapacity DO
+        power = validateIntegerInput(prompt)
+
+        IF power > maxPowerCapacity OR power < 0 
+            PRINT "Invalid power! Power should be between 0 and {maxPowerCapacity}"
+            CONTINUE TO NEXT ITERATION
+        END IF
+        IF power > availablePowerCapacity
+            PRINT "You cannot exceed your power capacity! You only have {availablePowerCapacity} power capacity
+            CONTINUE TO NEXT ITERATION
+        ENDIF
+
+        APPEND Power TO attributeStorage
+
+        FOR i <- 0 TO LENGTH(attributeStorage - 1) DO
+            availablePowerCapacity += attributeStorage[i]
+        ENDFOR
+        INCREMENT count BY 1
+    END FOR
+
+    RETURN 
+
+
+END FUNCTION    
+
+// =================================================================
+// FORWARD DECLARATIONS OF THE FUNCTIONS
+// ================================================================
+DECLARE FUNCTION basicCalculator
+DECLARE FUNCTION validateIntegerInput(prompt : CONSTANT REF STRING) RETURN INTEGER
+DECLARE FUNCTION validateDoubleInput(prompt : CONSTANT REF STRING) RETURN DOUBL
+DECLARE FUNCTION validCharInput(prompt : CONSTANT REF STRING) RETURN CHAR
+DECLARE FUNCTION addition
+DECLARE FUNCTION subtraction
+DECLARE FUNCTION multiplication
+DECLARE FUNCTION division
+DECLARE FUNCTION sumProcess(addends : vector) RETURN DOUBLE
+DECLARE FUNCTION differenceProcess(addends : vector) RETURN DOUBLE
+DECLARE FUNCTION multiplicationProcess(addends : vector) RETURN DOUBLE
+DECLARE FUNCTION divisionProcess(addends : vector) RETURN DOUBLE
+
+
+// Make sures that the input is an integer only
+FUNCTION validateIntegerInput(prompt : CONSTANT REF STRING)
+    validInteger : BOOLEAN
+    validInteger <- FALSE
+    verifiedInteger : INT
+    DO 
+        PRINT(prompt)
+        READ verifiedInteger
+        IF READ FAILS OR READ PEEK IS NOT NEXT LINE
+            RESET INPUT
+            CLEAR INPUT BUFFER
+            PRINT("Invalid input! Enter a valid integer only.")
+            CONTINUE TO NEXT ITERATION
+        ENDIF
+        validateIntegerInput = TRUE
+    WHILE validInteger NOT TRUE
+
+    RETURN verifiedInteger
+
+END FUNCTION
+
+// Make sure that the input is a double only
+FUNCTION validateDoubleInput(prompt : CONSTANT REF STRING)
+    validDouble : BOOLEAN
+    validDouble <- FALSE
+    verifiedDouble : DOUBLE
+    verifiedDouble <- 0
+    DO 
+        PRINT(prompt)
+        READ verifiedDouble
+        IF READ FAILS OR READ PEEK IS NOT NEXTLINE
+            RESET INPUT
+            CLEAR INPUT BUFFER
+            PRINT("Invalid input! Enter a valid double only.)
+            CONTINUE TO THE NEXT ITERATION
+        END IF
+        validDouble = TRUE
+    WHILE validDouble IS NOT TRUE
+    RETURN verifiedDouble
+END FUNCTION
+    
+
+
+
+// =================================================================
+// MODULE DEFINITION: MAIN FUNCTION APPLICATION LOOP FOR basicCalculator
+// =================================================================
+FUNCTION basicCalculator
+    // Initialize progam state and choice of operation 
+    exitProcess : BOOLEAN
+    operationChoice : INT 
+    operationChoice <- 0
+    // Initialize vector to store the addends 
+    size : INT 
+    sum : DOUBLE
+    addends : VECTOR OF INT
+    
+    // Display the basic calculator instruction and options. 
+    DO 
+        PRINT("================================================")
+        PRINT("         WELCOME TO BASIC CALCULATOR            ")
+        PRINT("================================================")
+        PRINT("PLEASE SELECT THE BASIC MATHEMATICAL OPERATION YOU WANT TO DO")
+        PRINT("1. Addition")
+        PRINT("2. Subtraction")
+        PRINT("3. Multiplication")
+        PRINT("4. Division")
+        PRINT("5. Exit")
+        operationPrompt : STRING
+        operationPrompt <- "ENTER your choice of operation: "
+        operationChoice = validateIntegerInput(operationPrompt)
+
+        // Routing to the right operation functions 
+        SWITCH operationChoice
+            CASE 1
+                CALL FUNCTION addition
+                EXIT SWITCH
+            CASE 2
+                CALL FUNCTION subtraction
+                EXIT SWITCH
+            CASE 3
+                CALL FUNCTION multiplication
+                EXIT SWITCH
+            CASE 4
+                CALL FUNCTION division
+                EXIT SWITCH
+            CASE 5
+                PRINT("Thank you for using the basic calculator!")
+                PRINT("RETURNING TO THE MAIN PAGE...)
+                exitProcess = TRUE
+                EXIT SWITCH
+            DEFAULT
+                PRINT("Invalid input!")
+                EXIT SWITCH
+            END SWITCH
+        WHILE exitProcess IS NOT TRUE
+END FUNCTION
+
+FUNCTION addition 
+    DO
+        PRINT("================================================")
+        PRINT("         WELCOME TO BASIC ADDITION            ")
+        PRINT("================================================")
+        PRINT("You can add upto how many numbers you want to. ")
+        PRINT("Just tell how many number you want to add. Followed")
+        PRINT("by the numbers.")
+        PRINT("Lets begin...")
+        STRING prompt1 = "ENTER HOW MANY NUMBERS YOU WANT TO ADD: " 
+        INT = validateIntegerInput(prompt)
+        FOR INT i <- 0 < size DO
+            STRING prompt2 = "Enter addend {i + 1}: "
+            addends[i] = validateDoubleInput(prompt)
+        ENDFOR
+        sum = sumProcess(addends)
+        PRINT("The sum of the {size} numbers is {sum}")
+
+        STRING prompt3 = "Do you want to do another addition? Y or N: "
+        choice : char
+        choice = validCharInput(prompt3)
+        SWITCH choice
+            CASE Y
+            CASE y 
+                BREAK
+            CASE N
+            CASE n 
+                exitProcess = TRUE
+                BREAK
+            DEFAULT 
+                PRINT("Invalid input!)
+                BREAK
+        END SWITCH
+    WHILE exitProcess IS NOT TRUE
+END FUNCTION
+
+FUNCTION sumProcess(addends : CONSTANT DOUBLE VECTOR) 
+    sum : DOUBLE
+    sum <- 0; 
+    FOR i <- 0 < LENGTH(addends) DO
+        sum =+ addends[i]
+    ENDFOR
+    RETURN sum
+END FUNCTION
+
+
+
+
+

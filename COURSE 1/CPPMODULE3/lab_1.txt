@@ -1,0 +1,40 @@
+Create a program that calculates final grades for students based on multiple assignment scores.
+
+Requirements: 
+1. Accept 3 assignment scores from the user (0-100 range)
+2. Calculate the average score
+3. Determine letter grade (A: 90+, B: 80-89, C: 70-79, D: 60-69, F: below 60)
+4. Display both numeric average and letter grade
+5. Handle invalid input (scores outside 0-100 range)
+
+PSUEDO CODE: 
+BEGIN AVERAGE COMPUTATION
+    INITIALIZE SUM = 0, AVERAGE = 0, COUNT = 0
+    INITIALIZE VECTOR CONTAINER SCORES TO SIZE 3 
+    WHILE COUNT < 3
+        PRINT ENTER SCORE FOR ASSIGNMENT COUNT: 
+        READ SCORES TO INDEX COUNT
+        IF READ FAILS OR SCORE[COUNT] < 0 OR SCORE[COUNT] > 100
+            PRINT ERROR INVALID INPUT! SCORES MUST BE BETWEEN 0 AND 100
+            CHECK FOR NUMBERIC LIMITS
+            CLEAR READ
+            GO BACK TO THE START OF THE ITERATION
+        END IF
+        SUM = SUM + SCORES AT INDEX COUNT
+        COUNT++
+    END WHILE
+    AVERAGE = SUM/SIZE OF SCORES
+    ROUND UP THE AVERAGE TO WHOLE NUMBER
+
+    IF AVERAGE >= 90
+        PRINT AVERAGE AND LETTER A
+    ELSE IF AVERAGE >=80 
+        PRINT AVERAGE AND LETTER B
+    ELSE IF AVERAGE >= 70 
+        PRINT AVERAGE AND LETTER C
+    ELSE IF AVERAGE >= 60 
+        PRINT AVERAGE AND LETTER D
+    ELSE
+        PRINT AVERAGE AND LETTER F
+    END IF
+END AVERAGE COMPUTATION
