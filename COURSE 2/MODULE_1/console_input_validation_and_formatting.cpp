@@ -112,7 +112,7 @@ std::optional<std::string>GetValidCustomerName(const std::string& prompt) {
             std::cerr << "Name cannot be empty." << '\n';
             continue;
         }
-        if (name.find_first_not_of(" \t")) {
+        if (name.find_first_not_of(" \t") == std::string::npos) {
             std::cerr << "Name cannot be spaces only." << '\n';
             continue;
         }

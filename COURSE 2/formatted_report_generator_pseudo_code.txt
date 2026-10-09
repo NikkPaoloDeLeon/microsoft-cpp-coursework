@@ -1,0 +1,101 @@
+// Include header files
+header files for input output streams
+header files for limits
+header files for string
+header files for vector 
+header files for random
+header files for charconv
+
+// Create forward declarations of the functions
+DECLARE FUNCTION ValidateIntegerOnly(STRING input) RETURN OPTIONAL INTEGER
+DECLARE FUNCTION ValidateStringOnly(STRING input) OPTIONAL STRING
+DECLARE FUNCTION GetFullName(STRING prompt) RETURN OPTIONAL ARRAY
+DECLARE FUNCTION GetAge(STRING input) RETURN OPTIONAL INTEGER
+
+
+// the starting point of the program
+INTEGER main
+
+    PRINT "YOUR AGE IS " + GetAge
+
+END main
+
+// Function to Validate if the data is an integer
+FUNCTION ValidateIntegerOnly(STRING input) RETURN INTEGER
+    STRING input
+    INTEGER value
+    WHILE TRUE 
+        // Use structure binding to get the pointer of the string and the error message at once
+        AUTO [pointer, errorC] = PARSE ASCII CHARACTERS FROM START ITERATOR TO END ITERATOR
+                                 CONVERT THE VALID SEQUENCE TO AN INTEGER
+                                 AND OVERWRITE THE 'parse_age' VARIABLE WITH THE COMPUTED RESULT
+        // First guard clause: Checks if the string has other character other than numbers '2ab5c'
+        IF (pointer == START ITERATOR + input SIZE) 
+            // Write directly to error stream without internal buffering
+            FLUSH("Syntax Error: Enter only a valid Integer number.")
+            CONTINUE TO NEXT ITERATION
+        ENDIF
+
+        // 2nd guard clause: Checks if the string does not contain any number 'abc'
+        IF (errorC == "Invalid argument")
+            // Write directly to error stream without internal buffering
+            FLUSH("Type Error: Enter integers numbers not letters, spaces, special characters")
+            CONTINUE TO NEXT ITERATION
+        ENDIF
+
+        // 3rd guard clause: Checks if the string exceed the maximum valid value '9999999999999999'
+        IF (errorC == "Result out of range)
+            FLUSH("Overflow: You have exceeded the maximum amount.")
+            CONTINUE TO NEXT ITERATION
+        ENDIF
+
+        RETURN value
+    ENDWHILE
+END FUNCTION
+
+// Function to get the age of the user
+FUNCTION GetAge(STRING prompt) RETURN INTEGER
+    STRING input
+    INTEGER age
+
+    WHILE TRUE
+    IF GETLINE WAS A FAILE
+        FLUSH("FATAL STREAM ERROR)
+        RETURN NULLOPT
+    END IF
+
+    ValidateIntegerOnly(input)
+
+    // Logical guard clause for age
+    IF (AGE < 0 OR AGE > 120)
+        PRINT "Invalid age."
+        RETURN NULLOPT;
+    END IF
+
+    RETURN age
+END FUNCTION
+
+FUNCTION ValidateStringOnly(STRING input) RETURN STRING
+    IF input IS EMPTY 
+        FLUSH("Name cannot be spaces only.")
+        RETURN UNINITIALIZED STATE
+    ENDIF
+
+    IF input IS ONLY SPACES
+        FLUSH("Name cannot have two conecutive spaces.")
+    ENDIF
+
+    IF input WAS FOUND TO HAVE TWO OR MORE CONSECUTIVE SPACES AND IS EQUAL TO NPOS
+        FLUSH("Name cannot have 2 or more consecutive space")
+        RETURN UNINITIALIZED STATE
+    ENDIF
+
+    BOOL isValidSet IS EQUAL TO EACH ELEMENT IN input IS VALID CHARACTER
+        RETURN TRUE IF ALL ELEMENTS FALLS ON LETTERS, -, ., ' '
+    ENDIF 
+    RETURN name
+        
+END FUNCTION
+
+FUNCTION GetFullName() RETURN ARRAY
+
